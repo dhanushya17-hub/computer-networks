@@ -1,0 +1,24 @@
+import requests
+import os
+
+# Define the file name and URL
+file_name = "digital_image_processing.jpg"
+website = "http://tutorialspoint.com/java_dip/images/" + file_name
+
+print(f"Downloading File From: {website}")
+
+try:
+    response = requests.get(website, stream=True)
+    response.raise_for_status()  # Raise an HTTPError for bad responses (4xx or 5xx)
+
+    with open(file_name, 'wb') as f:
+        for chunk in response.iter_content(chunk_size=2048):
+            f.write(chunk)
+            print(f"Buffer Read of length: {len(chunk)}")
+
+    print(f"File '{file_name}' downloaded successfully.")
+
+except requests.exceptions.RequestException as e:
+    print(f"Error downloading the file: {e}")
+except Exception as e:
+    print(f"An unexpected error occurred: {e}")
